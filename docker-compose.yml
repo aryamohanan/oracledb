@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  oracle:
+    image: gvenzl/oracle-free:latest
+    ports:
+      - "1521:1521"
+    environment:
+      ORACLE_PASSWORD: sys_user_password
+      ORACLE_USERNAME: my_user
+      ORACLE_PASSWORD_USER: password_i_should_change
+    healthcheck:
+      test: ["CMD", "/opt/oracle/scripts/checkDBStatus.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    volumes:
+      - ./my-init.sql:/container-entrypoint-initdb.d/my-init.sql:ro
